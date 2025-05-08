@@ -31,11 +31,11 @@ jobs:
           docker build -t vote-app-image ./vote
           docker save vote-app-image > vote-app-image.tar
       
-      - name: Upload image artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: vote-app-image
-          path: vote-app-image.tar
+   ##   - name: Upload image artifact
+   ##     uses: actions/upload-artifact@v3
+   ##     with:
+   ##       name: vote-app-image
+   ##       path: vote-app-image.tar
 
   push:
     needs: build
