@@ -28,4 +28,43 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t vote-app ./vote
+          docker build -t vote-app-image ./vote
+          docker save vote-app-image > vote-app-image.tar
+      
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: vote-app-image
+          path: vote-app-image.tar
+
+  push:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download built image
+        uses: actions/download-artifact@v3
+        with:
+          name: vote-app-image
+          path: .
+
+      - name: Load Docker image
+        run: docker load < vote-app-image.tar
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      - name: Log in to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.AZURE_CLIENT_ID }}
+          password: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      - name: Tag and push to ACR
+        run: |
+          docker tag vote-app-image ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
