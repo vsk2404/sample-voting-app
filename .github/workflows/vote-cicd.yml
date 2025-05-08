@@ -28,4 +28,4 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t example-vote-app-vote ./vote
+          docker build -t vote-app ./vote
