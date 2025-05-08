@@ -42,14 +42,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download built image
-        uses: actions/download-artifact@v3
-        with:
-          name: vote-app-image
-          path: .
+     # - name: Download built image
+     #   uses: actions/download-artifact@v2
+      #  with:
+     #     name: vote-app-image
+      #    path: .
 
-      - name: Load Docker image
-        run: docker load < vote-app-image.tar
+    #  - name: Load Docker image
+    #    run: docker load < vote-app-image.tar
 
       - name: Log in to Azure
         uses: azure/login@v1
