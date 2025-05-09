@@ -74,7 +74,12 @@ jobs:
           sed -i "s|image:.*|image: $IMAGE|g" ./k8s-specifications/vote-deployment.yaml
 
       - name: Deploy to AKS
-        run: kubectl apply -f ./k8s-specifications/vote-deployment.yaml
+        run: |
+          kubectl apply -f ./k8s-specification/redis-service.yaml
+          kubectl apply -f ./k8s-specification/redis-deployment.yaml
+          kubectl apply -f ./k8s-specifications/vote-service.yaml
+          kubectl apply -f ./k8s-specifications/vote-deployment.yaml
+
 
   #    - name: Deploy to AKS
   #      run: |
