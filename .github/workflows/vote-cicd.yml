@@ -1,4 +1,4 @@
-name: Build Vote Docker Image
+name: Build and Push Vote Docker Image
 
 on:
   push:
@@ -10,15 +10,12 @@ on:
       - 'vote/**'
 
 permissions:
-  id-token: write  # Required for OIDC login
+  id-token: write
   contents: read
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
-
-    outputs:
-      image_tag: ${{ steps.set-tag.outputs.tag }}
 
     steps:
       - name: Checkout repository
@@ -29,37 +26,15 @@ jobs:
 
       - name: Generate incremental image tag
         id: set-tag
-        run: |
-          echo "tag=build-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+        run: echo "tag=build-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
-      - name: Log in to DockerHub (optional)
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build Docker image
-        run: |
-          docker build -t vote-app-image:${{ steps.set-tag.outputs.tag }} ./vote
-
-      - name: Set output tag
-        id: tag-output
-        run: echo "tag=${{ steps.set-tag.outputs.tag }}" >> "$GITHUB_OUTPUT"
-
-  push:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Azure Login via OIDC
         uses: azure/login@v1.6.1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          allow-no-subscriptions: true
-          enable-AzPSSession: true
-          #subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           auth-type: SERVICE_PRINCIPAL
+          allow-no-subscriptions: true
 
       - name: Log in to ACR
         uses: azure/docker-login@v1
@@ -70,6 +45,10 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest ./vote
-          echo "Pushing tag: ${{ steps.set-tag.outputs.tag }}"
+          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }} ./vote
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }}
+
+      - name: Optionally tag latest
+        run: |
+          docker tag ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }} ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
           docker push ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
