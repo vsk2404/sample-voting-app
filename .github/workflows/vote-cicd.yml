@@ -21,16 +21,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Azure Login via OIDC
-        uses: azure/login@v1.6.1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          allow-no-subscriptions: true
-          enable-AzPSSession: true
-          #subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          auth-type: SERVICE_PRINCIPAL
-
       - name: Log in to ACR
         uses: azure/docker-login@v1
         with:
@@ -41,20 +31,6 @@ jobs:
       - name: Build & Push
         uses: docker/build-push-action@v5
         with:
-          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
-          username: ${{ secrets.AZURE_CLIENT_ID }}
-          password: ${{ secrets.AZURE_CLIENT_SECRET }}
           push: true
           tags: ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ github.sha }}
           file: vote/Dockerfile
-
-
-  #    - name: Build and push Docker image
-  #      run: |
-  #        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }} ./vote
-  #        docker push ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }}
-
-  #    - name: Optionally tag latest
-  #      run: |
-  #        docker tag ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }} ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
-  #        docker push ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
