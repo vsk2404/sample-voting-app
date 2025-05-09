@@ -9,9 +9,9 @@ on:
     paths:
       - 'vote/**'
 
-permissions:
-  id-token: write  # Required for OIDC login
-  contents: read
+#permissions:
+#  id-token: write  # Required for OIDC login
+#  contents: read
 
 jobs:
   build:
