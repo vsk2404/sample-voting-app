@@ -35,8 +35,8 @@ jobs:
           docker build -t vote-app-image:${{ steps.version.outputs.tag }} ./vote
 
       - name: Set output tag
-          id: tag-output
-          run: echo "tag=${{ steps.version.outputs.tag }}" >> "$GITHUB_OUTPUT"
+        id: tag-output
+        run: echo "tag=${{ steps.version.outputs.tag }}" >> "$GITHUB_OUTPUT"
 
 
       - name: Upload image artifact
