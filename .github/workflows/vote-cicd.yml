@@ -38,16 +38,18 @@ jobs:
       #    subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           auth-type: SERVICE_PRINCIPAL
 
+  #    - name: Log in to ACR
+  #      run: |
+  #        az acr login --name ${{ secrets.ACR_LOGIN_SERVER }}
+
       - name: Log in to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.AZURE_CLIENT_ID }}
+          password: ${{ secrets.AZURE_CLIENT_SECRET }}
         run: |
           az acr login --name ${{ secrets.ACR_LOGIN_SERVER }}
-
-  #    - name: Log in to ACR
-  #      uses: azure/docker-login@v1
-  #      with:
-  #        login-server: ${{ secrets.ACR_LOGIN_SERVER }}
-  #        username: ${{ secrets.AZURE_CLIENT_ID }}
-  #        password: ${{ secrets.AZURE_CLIENT_SECRET }}
 
       - name: Build and push Docker image
         run: |
