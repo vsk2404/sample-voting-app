@@ -22,7 +22,7 @@ services:
       - backend
 
   vote:
-    image: dockersamples/examplevotingapp_vote
+    image: dockersamples/samplevotingapp_vote
     ports:
       - 8080:80
     networks:
@@ -31,14 +31,14 @@ services:
       replicas: 2
 
   result:
-    image: dockersamples/examplevotingapp_result
+    image: dockersamples/samplevotingapp_result
     ports:
       - 8081:80
     networks:
       - backend
 
   worker:
-    image: dockersamples/examplevotingapp_worker
+    image: dockersamples/samplevotingapp_worker
     networks:
       - frontend
       - backend
