@@ -74,5 +74,6 @@ jobs:
 
       - name: Tag and push to ACR
         run: |
-          docker tag vote-app-image ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
           docker push ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
+      #    docker tag vote-app-image ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
+          
