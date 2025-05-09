@@ -68,9 +68,17 @@ jobs:
           cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
           resource-group: ${{ secrets.AKS_RESOURCE_GROUP }}
 
-      - name: Deploy to AKS
+      - name: Update image in deployment manifest
         run: |
-          IMAGE=${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ needs.build-and-push.outputs.set-tag.outputs.tag }}
+          export IMAGE="${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:vote-${{ github.run_number }}"
+          sed -i "s|image:.*|image: $IMAGE|g" k8s-specification/deployment.yml
 
-          kubectl create deployment vote-app --image=$IMAGE --dry-run=client -o yaml | kubectl apply -f -
-          kubectl expose deployment vote-app --port=80 --target-port=80 --type=LoadBalancer --name=vote-service || true
+      - name: Deploy to AKS
+        run: kubectl apply -f k8s-specification/deployment.yml
+
+  #    - name: Deploy to AKS
+  #      run: |
+  #        IMAGE=${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ needs.build-and-push.outputs.set-tag.outputs.tag }}
+
+  #        kubectl create deployment vote-app --image=$IMAGE --dry-run=client -o yaml | kubectl apply -f -
+  #        kubectl expose deployment vote-app --port=80 --target-port=80 --type=LoadBalancer --name=vote-service || true
