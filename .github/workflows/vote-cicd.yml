@@ -28,15 +28,15 @@ jobs:
         id: set-tag
         run: echo "tag=build-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
-      - name: Azure Login via OIDC
-        uses: azure/login@v1.6.1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          allow-no-subscriptions: true
-          enable-AzPSSession: true
+  #    - name: Azure Login via OIDC
+  #      uses: azure/login@v1.6.1
+  #      with:
+  #        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #        allow-no-subscriptions: true
+  #        enable-AzPSSession: true
           #subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          auth-type: SERVICE_PRINCIPAL
+  #        auth-type: SERVICE_PRINCIPAL
 
       - name: Log in to ACR
         uses: azure/docker-login@v1
@@ -45,7 +45,14 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Build and push Docker image
-        run: |
-          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }} ./vote
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }}
+      - name: Build & Push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }}
+          file: vote/Dockerfile
+
+  #    - name: Build and push Docker image
+  #      run: |
+  #        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }} ./vote
+  #        docker push ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }}
