@@ -36,7 +36,7 @@ jobs:
           docker save vote-app-image > vote-app-image.tar
       
       - name: Upload image artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: vote-app-image
           path: vote-app-image.tar
