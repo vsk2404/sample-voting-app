@@ -2,7 +2,6 @@ name: Build and Push Vote Docker Image
 
 on:
   push:
-    tags: ["v*.*.*"]
     paths:
       - 'vote/**'
       - '.github/workflows/vote-cicd.yml'
