@@ -71,10 +71,10 @@ jobs:
       - name: Update image in deployment manifest
         run: |
           export IMAGE="${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:vote-${{ github.run_number }}"
-          sed -i "s|image:.*|image: $IMAGE|g" ./k8s-specification/vote-deployment.yaml
+          sed -i "s|image:.*|image: $IMAGE|g" ./k8s-specifications/vote-deployment.yaml
 
       - name: Deploy to AKS
-        run: kubectl apply -f ./k8s-specification/vote-deployment.yaml
+        run: kubectl apply -f ./k8s-specifications/vote-deployment.yaml
 
   #    - name: Deploy to AKS
   #      run: |
