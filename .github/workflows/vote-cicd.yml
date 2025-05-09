@@ -36,6 +36,7 @@ jobs:
         with:
           context: ./vote
           file: vote/Dockerfile
+          platforms: linux/amd64
           load: true
           tags: vote-app-image:temp
 
