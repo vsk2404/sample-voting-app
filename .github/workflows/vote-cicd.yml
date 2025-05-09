@@ -38,13 +38,6 @@ jobs:
         id: tag-output
         run: echo "tag=${{ steps.version.outputs.tag }}" >> "$GITHUB_OUTPUT"
 
-
-      - name: Upload image artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: vote-app-image
-          path: vote-app-image.tar
-
   push:
     needs: build
     runs-on: ubuntu-latest
