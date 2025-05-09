@@ -36,7 +36,7 @@ jobs:
           allow-no-subscriptions: true
           enable-AzPSSession: true
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-         # auth-type: federated
+          auth-type: SERVICE_PRINCIPAL
 
       - name: Log in to ACR
         run: |
