@@ -32,14 +32,18 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t vote-app-image ./vote
-      #    docker save vote-app-image > vote-app-image.tar
+          docker build -t vote-app-image:${{ steps.version.outputs.tag }} ./vote
 
-    #  - name: Upload image artifact
-    #    uses: actions/upload-artifact@v3
-    #    with:
-    #      name: vote-app-image
-    #      path: vote-app-image.tar
+      - name: Set output tag
+          id: tag-output
+          run: echo "tag=${{ steps.version.outputs.tag }}" >> "$GITHUB_OUTPUT"
+
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: vote-app-image
+          path: vote-app-image.tar
 
   push:
     needs: build
@@ -74,6 +78,6 @@ jobs:
 
       - name: Tag and push to ACR
         run: |
+          docker tag vote-app-image ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
           docker push ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
-      #    docker tag vote-app-image ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:latest
           
