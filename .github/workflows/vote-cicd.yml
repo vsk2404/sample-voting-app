@@ -33,7 +33,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t vote-app-image ./vote
-          docker save vote-app-image > vote-app-image.tar
+      #    docker save vote-app-image > vote-app-image.tar
 
     #  - name: Upload image artifact
     #    uses: actions/upload-artifact@v3
