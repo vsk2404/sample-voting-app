@@ -22,7 +22,7 @@ jobs:
 
       - name: Generate incremental image tag
         id: set-tag
-        run: echo "tag=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+        run: echo "tag=vote-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
       - name: Log in to ACR
         uses: azure/docker-login@v1
