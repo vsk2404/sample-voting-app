@@ -40,7 +40,7 @@ jobs:
 
       - name: Log in to ACR
         run: |
-          az acr login --name ${{ secrets.ACR_NAME }}
+          az acr login --name ${{ secrets.ACR_LOGIN_SERVER }}
 
   #    - name: Log in to ACR
   #      uses: azure/docker-login@v1
