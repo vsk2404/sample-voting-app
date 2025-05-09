@@ -52,8 +52,8 @@ jobs:
     #      name: vote-app-image
     #      path: .
 
-      - name: Load Docker image
-        run: docker load < vote-app-image.tar
+    #  - name: Load Docker image
+    #    run: docker load < vote-app-image.tar
 
       - name: Log in to Azure
         uses: azure/login@v1.6.1
