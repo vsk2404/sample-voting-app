@@ -51,6 +51,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Debug tag
+        run: echo "Pushing tag: ${{ steps.set-tag.outputs.tag }}"
+        
       - name: Azure Login via OIDC
         uses: azure/login@v1.6.1
         with:
@@ -67,9 +70,6 @@ jobs:
           login-server: ${{ secrets.ACR_LOGIN_SERVER }}
           username: ${{ secrets.AZURE_CLIENT_ID }}
           password: ${{ secrets.AZURE_CLIENT_SECRET }}
-
-      - name: Debug tag
-        run: echo "Pushing tag: ${{ steps.set-tag.outputs.tag }}"
 
       - name: Optionally tag latest
         run: |
