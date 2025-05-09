@@ -37,6 +37,7 @@ jobs:
           context: ./vote
           file: vote/Dockerfile
           platforms: linux/arm64
+          load: true
           tags: vote-app-image:temp
 
       - name: Tag image with ACR path
