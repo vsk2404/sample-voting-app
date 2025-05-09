@@ -1,13 +1,13 @@
-name: Build and push Result Docker Image
+name: Build worker Docker Image
 
 on:
   push:
     paths:
-      - 'result/**'
-      - '.github/workflows/result-cicd.yml'
+      - 'worker/**'
+      - '.github/workflows/worker-cicd.yml'
   pull_request:
     paths:
-      - 'result/**'
+      - 'worker/**'
 
 jobs:
   build-and-push:
@@ -34,13 +34,13 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./result
-          file: result/Dockerfile
+          context: ./worker
+          file: worker/Dockerfile
           load: true
-          tags: result-app-image:temp
+          tags: worker-app-image:temp
 
       - name: Tag image with ACR path
-        run: docker tag result-app-image:temp ${{ secrets.ACR_LOGIN_SERVER }}/result-app-image:${{ steps.set-tag.outputs.tag }}
+        run: docker tag worker-app-image:temp ${{ secrets.ACR_LOGIN_SERVER }}/worker-app-image:${{ steps.set-tag.outputs.tag }}
 
       - name: Push Docker image to ACR
-        run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/result-app-image:${{ steps.set-tag.outputs.tag }}
+        run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/worker-app-image:${{ steps.set-tag.outputs.tag }}
