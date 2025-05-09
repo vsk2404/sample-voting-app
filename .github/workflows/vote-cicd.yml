@@ -42,10 +42,10 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-        tags: ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ github.sha }}
-        file: vote/Dockerfile
+          tags: ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ github.sha }}
+          file: vote/Dockerfile
 
-        
+
   #    - name: Build and push Docker image
   #      run: |
   #        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }} ./vote
