@@ -26,7 +26,7 @@ jobs:
 
       - name: Generate incremental image tag
         id: set-tag
-        run: echo "tag=build-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+        run: echo "tag=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
       - name: Log in to ACR
         uses: azure/docker-login@v1
@@ -35,9 +35,16 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Build & Push
+      - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          push: true
-          tags: ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }}
+          context: ./vote
           file: vote/Dockerfile
+          load: true
+          tags: vote-app-image:temp
+
+      - name: Tag image with ACR path
+        run: docker tag vote-app-image:temp ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }}
+
+      - name: Push Docker image to ACR
+        run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/vote-app-image:${{ steps.set-tag.outputs.tag }}
