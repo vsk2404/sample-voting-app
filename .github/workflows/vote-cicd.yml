@@ -40,11 +40,13 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t vote-app-image:${{ steps.version.outputs.tag }} ./vote
+          docker build -t vote-app-image:${{ steps.set-tag.outputs.tag }} ./vote
+      #    docker build -t vote-app-image:${{ steps.set-tag.outputs.tag }} ./vote
+      #    docker save vote-app-image:${{ steps.set-tag.outputs.tag }} > vote-app-image.tar
 
       - name: Set output tag
         id: tag-output
-        run: echo "tag=${{ steps.version.outputs.tag }}" >> "$GITHUB_OUTPUT"
+        run: echo "tag=${{ steps.set-tag.outputs.tag }}" >> "$GITHUB_OUTPUT"
 
   push:
     needs: build
