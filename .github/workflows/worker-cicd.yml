@@ -79,8 +79,5 @@ jobs:
 
       - name: Deploy to AKS
         run: |
-          kubectl apply -f ./k8s-specifications/redis-service.yaml
-          kubectl apply -f ./k8s-specifications/redis-deployment.yaml
-          kubectl apply -f ./k8s-specifications/worker-service.yaml
           kubectl apply -f ./k8s-specifications/worker-deployment.yaml
                 
