@@ -88,7 +88,7 @@ https://github.com/vsk2404/sample-voting-app
 ![alt text](images/vote_ui.png)
 
 ### Note:
-> I have copied the project repo from the Docker samples GitHub repo. I have created the GitHub actions workflow files as per the project.
+> **I have copied the project from the Docker samples GitHub repo. I have created the GitHub actions workflow files as per the project.**
 
 ----------------------------------------------------------------------------------------------------------
 
