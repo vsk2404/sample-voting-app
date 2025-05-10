@@ -2,7 +2,10 @@
 
 > I recently built an automated CI/CD pipeline for a microservices-based app, deploying directly to Azure Kubernetes Service (AKS) using GitHub Actions.
 >
-> 🔗 Project repo: https://github.com/vsk2404/sample-voting-app
+> 🔗 Project repo: 
+```
+https://github.com/vsk2404/sample-voting-app
+```
 >
 > This project, the classic Sample Voting App, uses multiple services (Vote UI, Result UI, Worker, Redis, and DB), all containerized and orchestrated using plain Kubernetes manifests.
 >
@@ -83,6 +86,11 @@
 #### Vote ui
 
 ![alt text](images/vote_ui.png)
+
+### Note:
+> I have copied the project repo from the Docker samples GitHub repo. I have created the GitHub actions workflow files as per the project.
+
+----------------------------------------------------------------------------------------------------------
 
 # sample Voting App
 
